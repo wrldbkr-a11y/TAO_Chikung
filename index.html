@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2f3d33">
+<title>Meridiaan chi kung – 18 bewegingen</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<style>
+:root{
+  --bg:#f4efe6;--ink:#2b2a26;--muted:#7a7468;--card:#fffaf1;--line:#e2d9c8;--accent:#2f3d33;
+  --hout:#4f8a4b;--vuur:#c4472f;--aarde:#c79a2b;--metaal:#9aa3ab;--water:#2f5d8a;--vuur2:#e08a4c;--tantien:#7a5c8f;--geen:#c9c1b2;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);-webkit-tap-highlight-color:transparent}
+button{font-family:inherit;cursor:pointer}
+header{padding:calc(18px + env(safe-area-inset-top)) 16px 6px;display:flex;align-items:flex-start;gap:12px}
+.kop{flex:1}
+h1{font-size:1.4rem;margin:0;line-height:1.2;font-weight:650}
+h1 small{display:block;font-size:.95rem;color:var(--muted);font-weight:500;margin-top:3px}
+.knop{border:1px solid var(--line);background:var(--card);border-radius:12px;height:46px;padding:0 14px;font-size:.95rem;color:var(--ink)}
+.knop.aan{background:var(--ink);color:#fff;border-color:var(--ink)}
+.filters{padding:0 16px 6px}
+.label{font-size:.78rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:12px 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips::-webkit-scrollbar{display:none}
+.chip{border:2px solid var(--line);background:var(--card);border-radius:999px;padding:0 16px;min-height:48px;padding-top:6px;padding-bottom:6px;font-size:1rem;color:var(--ink);display:flex;align-items:center;gap:8px}
+.chip .dot{width:13px;height:13px;border-radius:50%}
+.chip .tw{display:flex;flex-direction:column;line-height:1.15;text-align:left}
+.chip .tw small{font-size:.75rem;opacity:.75}
+.chip.aan{border-color:var(--ink);background:var(--ink);color:#fff}
+main{padding:10px 16px 48px;display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.kaart{position:relative;border:none;text-align:left;background:var(--card);border-radius:18px;padding:18px 18px 18px 28px;min-height:96px;font-size:1.2rem;font-weight:600;color:var(--ink);box-shadow:0 1px 0 var(--line),0 3px 10px rgba(60,50,30,.07);overflow:hidden;width:100%}
+.kaart:active{transform:scale(.985)}
+.kaart::before{content:"";position:absolute;left:0;top:0;bottom:0;width:12px;background:var(--kleur,var(--geen))}
+.kaart .meta{display:block;font-size:.88rem;font-weight:500;color:var(--muted);margin-top:6px}
+.alles{grid-column:1/-1;width:100%;min-height:58px;font-size:1.1rem;font-weight:600}
+.leeg{grid-column:1/-1;text-align:center;color:var(--muted);padding:36px 12px;line-height:1.55}
+.groot{display:inline-block;background:var(--accent);color:#fff;border:none;border-radius:14px;padding:14px 22px;font-size:1.05rem}
+.balk{grid-column:1/-1;display:flex;gap:10px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:.9rem;line-height:1.4}
+.bewerk{background:var(--card);border-radius:18px;padding:14px;display:grid;gap:8px;border-left:12px solid var(--kleur,var(--geen))}
+.bewerk input,.bewerk select{font-size:1rem;padding:11px;border:1px solid var(--line);border-radius:10px;background:#fff;width:100%;color:var(--ink)}
+.rij{display:flex;gap:8px}
+.wis{background:none;border:1px solid #d9b3a8;color:#a3412b;border-radius:10px;padding:10px;font-size:.95rem}
+#speler{position:fixed;inset:0;background:#000;display:none;flex-direction:column;z-index:10}
+#speler.open{display:flex}
+#speler .top{display:flex;align-items:center;gap:12px;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;color:#fff}
+#speler .top div{flex:1;font-size:1.05rem}
+#speler button{background:rgba(255,255,255,.16);color:#fff;border:none;border-radius:12px;height:48px;min-width:48px;font-size:1.3rem}
+#speler button:disabled{opacity:.3}
+#audioBeeld{display:none;flex:1;flex-direction:column;align-items:center;justify-content:center;gap:28px;color:#fff;font-size:1.3rem;text-align:center;padding:20px}
+#audioBeeld .schijf{width:46vmin;height:46vmin;border-radius:50%;background:var(--kleur,var(--geen));opacity:.85;animation:adem 8s ease-in-out infinite}
+@keyframes adem{0%,100%{transform:scale(.82)}50%{transform:scale(1)}}
+#speler.audio #audioBeeld{display:flex}
+#speler.audio video{flex:0 0 auto;height:80px}
+#speler video{flex:1;width:100%;min-height:0;background:#000}
+.tabs{display:flex;gap:6px;margin:8px 16px 0;background:#e9e1d3;border-radius:14px;padding:4px}
+.tabs button{flex:1;height:44px;border:none;border-radius:11px;background:none;font-size:1rem;color:var(--muted);font-weight:600}
+.tabs button.aan{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(60,50,30,.12)}
+#tabInfo main{padding-top:16px}
+.kaart.pdf{--kleur:var(--accent)}
+#lezer{position:fixed;inset:0;background:#3a3833;display:none;flex-direction:column;z-index:10}
+#lezer.open{display:flex}
+#lezer .top{display:flex;align-items:center;gap:8px;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;color:#fff;background:#2b2a26}
+#lezer .top div{flex:1;font-size:1rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#lezer button{background:rgba(255,255,255,.16);color:#fff;border:none;border-radius:12px;height:46px;min-width:46px;font-size:1.3rem}
+#paginas{flex:1;overflow:auto;padding:10px 0 40px;-webkit-overflow-scrolling:touch}
+.pagina{margin:0 auto 10px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+.pagina canvas{display:block;width:100%;height:100%}
+#melding{position:fixed;left:16px;right:16px;bottom:calc(20px + env(safe-area-inset-bottom));background:var(--ink);color:#fff;padding:14px 16px;border-radius:14px;display:none;z-index:20;font-size:.98rem}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kop"><h1>Meridiaan chi kung<small>18 bewegingen · helende geluiden</small></h1></div>
+  <button class="knop" id="bewerkKnop">Bewerken</button>
+</header>
+
+<nav class="tabs">
+  <button id="tabKnopOef" class="aan">Oefeningen</button>
+  <button id="tabKnopInfo">Info</button>
+</nav>
+
+<div id="tabOef">
+<section class="filters">
+  <div class="label">Element · meridianen</div>
+  <div class="chips" id="elementChips"></div>
+  <div class="label">Soort</div>
+  <div class="chips" id="soortChips"></div>
+</section>
+
+<main id="lijst"></main>
+</div>
+
+<div id="tabInfo" hidden>
+  <main id="infoLijst"></main>
+</div>
+
+<div id="lezer">
+  <div class="top"><div id="lezerTitel"></div>
+    <button id="kleiner" aria-label="Kleiner">−</button><button id="groter" aria-label="Groter">+</button>
+    <button id="lezerSluit" aria-label="Sluiten">✕</button></div>
+  <div id="paginas"></div>
+</div>
+
+<div id="speler">
+  <div class="top"><div id="spelerTitel"></div><button id="vorige" aria-label="Vorige">⏮</button><button id="volgende" aria-label="Volgende">⏭</button><button id="sluit" aria-label="Sluiten">✕</button></div>
+  <div id="audioBeeld"><div class="schijf"></div><div id="audioNaam"></div></div>
+  <video id="video" controls playsinline></video>
+</div>
+
+<input type="file" id="bestanden" accept="video/*,audio/*" multiple hidden>
+<input type="file" id="pdfBestanden" accept="application/pdf,.pdf" multiple hidden>
+<div id="melding"></div>
+
+<script>
+const ELEMENTEN = [["hout","Hout"],["vuur","Vuur"],["vuur2","Vuur"],["aarde","Aarde"],["metaal","Metaal"],["water","Water"],["tantien","Tan tien"]];
+const ORGANEN = {hout:"lever · galblaas", vuur:"hart · dunne darm", vuur2:"hartomhulsel · drievoudige verwarmer", aarde:"milt · maag", metaal:"longen · dikke darm", water:"nieren · blaas", tantien:"rug · buik"};
+// woorden in bestandsnamen die naar een element wijzen
+const HERKEN = {
+  hout:["hout","lever","gal"],
+  vuur2:["omhulsel","pericard","verwarmer","drievoudig","3v"],
+  vuur:["vuur","hart","dunne darm","dunnedarm"],
+  aarde:["aarde","milt","maag","pancreas"],
+  metaal:["metaal","long","dikke darm","dikkedarm"],
+  water:["water","nier","blaas"],
+  tantien:["tantien","tan tien","dantian","rug","buik"]
+};
+const SOORTEN   = [["basis","Basisoefeningen"],["integreren","Integreren"],["versterken","Versterken"],["geluid","Helende geluiden"]];
+const naamVan = (lijst, k) => (lijst.find(x => x[0] === k) || [, ""])[1];
+
+/* ---------- opslag (IndexedDB) ---------- */
+let db;
+function openDb(){
+  return new Promise((ok, fout) => {
+    const r = indexedDB.open("chikung", 2);
+    r.onupgradeneeded = () => {
+      const d = r.result, namen = d.objectStoreNames;
+      if (!namen.contains("meta")) d.createObjectStore("meta", {keyPath:"id"});
+      if (!namen.contains("bestand")) d.createObjectStore("bestand");
+      if (!namen.contains("info")) d.createObjectStore("info", {keyPath:"id"});
+    };
+    r.onsuccess = () => ok(r.result);
+    r.onerror = () => fout(r.error);
+  });
+}
+function tx(stores, mode, werk){
+  return new Promise((ok, fout) => {
+    const t = db.transaction(stores, mode);
+    let res;
+    t.oncomplete = () => ok(res);
+    t.onerror = () => fout(t.error);
+    t.onabort = () => fout(t.error);
+    res = werk(t);
+  });
+}
+const alleMeta = () => new Promise((ok, fout) => {
+  const r = db.transaction("meta").objectStore("meta").getAll();
+  r.onsuccess = () => ok(r.result); r.onerror = () => fout(r.error);
+});
+const haalBestand = id => new Promise((ok, fout) => {
+  const r = db.transaction("bestand").objectStore("bestand").get(id);
+  r.onsuccess = () => ok(r.result); r.onerror = () => fout(r.error);
+});
+const bewaarMeta = m => tx("meta", "readwrite", t => t.objectStore("meta").put(m));
+
+/* ---------- toestand ---------- */
+let items = [];
+let bewerken = false;
+let filter = {element:"", soort:""};
+try { Object.assign(filter, JSON.parse(localStorage.getItem("chikungFilter") || "{}")); } catch(e){}
+const bewaarFilter = () => { try { localStorage.setItem("chikungFilter", JSON.stringify(filter)); } catch(e){} };
+
+/* ---------- melding ---------- */
+let meldTimer;
+function meld(tekst, blijf){
+  const m = document.getElementById("melding");
+  m.textContent = tekst; m.style.display = "block";
+  clearTimeout(meldTimer);
+  if (!blijf) meldTimer = setTimeout(() => m.style.display = "none", 2600);
+}
+
+/* ---------- filters ---------- */
+function tekenChips(){
+  const maak = (houder, lijst, sleutel) => {
+    houder.innerHTML = "";
+    [["", "Alle"], ...lijst].forEach(([k, label]) => {
+      const b = document.createElement("button");
+      b.className = "chip" + (filter[sleutel] === k ? " aan" : "");
+      if (k && sleutel === "element") {
+        const d = document.createElement("span");
+        d.className = "dot"; d.style.background = `var(--${k})`;
+        b.appendChild(d);
+      }
+      if (k && sleutel === "element") {
+        const t = document.createElement("span"); t.className = "tw";
+        t.innerHTML = `${label}<small>${ORGANEN[k]}</small>`;
+        b.appendChild(t);
+      } else b.appendChild(document.createTextNode(label));
+      b.onclick = () => { filter[sleutel] = k; bewaarFilter(); tekenChips(); tekenLijst(); };
+      houder.appendChild(b);
+    });
+  };
+  maak(document.getElementById("elementChips"), ELEMENTEN, "element");
+  maak(document.getElementById("soortChips"), SOORTEN, "soort");
+}
+
+/* ---------- lijst ---------- */
+function gefilterd(){
+  return items
+    .filter(i => (!filter.element || i.element === filter.element) &&
+                 (!filter.soort || i.soort === filter.soort))
+    .sort((a, b) => (!!a.element - !!b.element) || ((a.soort === "geluid") - (b.soort === "geluid")) ||
+                    a.naam.localeCompare(b.naam, "nl", {numeric:true}));
+}
+
+function tekenLijst(){
+  const lijst = document.getElementById("lijst");
+  lijst.innerHTML = "";
+
+  if (!items.length) {
+    lijst.innerHTML = `<div class="leeg">Nog geen filmpjes of geluiden in de app.<br>Kies ze één keer van je gsm; daarna werken ze ook offline.<br><br>
+      <button class="groot" id="eersteImport">+ Bestanden toevoegen</button></div>`;
+    document.getElementById("eersteImport").onclick = () => document.getElementById("bestanden").click();
+    return;
+  }
+
+  if (bewerken) {
+    const balk = document.createElement("div");
+    balk.className = "balk";
+    balk.innerHTML = `<button class="groot" id="voegToe">+ Bestanden toevoegen</button><span id="ruimte"></span>`;
+    lijst.appendChild(balk);
+    document.getElementById("voegToe").onclick = () => document.getElementById("bestanden").click();
+    toonRuimte();
+  }
+
+  const zicht = gefilterd();
+  if (!zicht.length) {
+    lijst.insertAdjacentHTML("beforeend", `<div class="leeg">Geen filmpjes voor deze keuze.</div>`);
+    return;
+  }
+
+  // reeks = alleen bestanden met een element; losse (bv. korte versie, opwarming) worden overgeslagen
+  // zonder element- en soortfilter: alleen de 18 bewegingen (geluiden hebben hun eigen chip)
+  const reeks = zicht.filter(i => i.element && (filter.element || filter.soort || (i.soort !== "geluid" && i.element !== "tantien")));
+  const knopAlles = () => {
+    const b = document.createElement("button");
+    b.className = "groot alles";
+    b.textContent = `▶  Alles na elkaar afspelen (${reeks.length})`;
+    b.onclick = () => speel(reeks, 0);
+    return b;
+  };
+  let knopGezet = bewerken || reeks.length < 2;
+  zicht.forEach(i => {
+    if (!knopGezet && reeks.includes(i)) { lijst.appendChild(knopAlles()); knopGezet = true; }
+    lijst.appendChild(bewerken ? bewerkKaart(i) : speelKaart(i));
+  });
+}
+
+function speelKaart(i){
+  const b = document.createElement("button");
+  b.className = "kaart";
+  if (i.element) b.style.setProperty("--kleur", `var(--${i.element})`);
+  b.textContent = i.naam;
+  const meta = [i.element ? `${naamVan(ELEMENTEN, i.element)} (${ORGANEN[i.element].replace(" · ", ", ")})` : "", naamVan(SOORTEN, i.soort)].filter(Boolean).join(" · ");
+  if (meta) { const s = document.createElement("span"); s.className = "meta"; s.textContent = meta; b.appendChild(s); }
+  b.onclick = () => speel([i], 0);
+  return b;
+}
+
+function keuzelijst(lijst, waarde, leeg){
+  const s = document.createElement("select");
+  [["", leeg], ...lijst].forEach(([k, l]) => {
+    const o = document.createElement("option"); o.value = k; o.textContent = l;
+    if (k === waarde) o.selected = true;
+    s.appendChild(o);
+  });
+  return s;
+}
+
+function bewerkKaart(i){
+  const d = document.createElement("div");
+  d.className = "bewerk";
+  if (i.element) d.style.setProperty("--kleur", `var(--${i.element})`);
+
+  const naam = document.createElement("input");
+  naam.value = i.naam;
+  naam.onchange = async () => { i.naam = naam.value.trim() || i.naam; await bewaarMeta(i); };
+
+  const el = keuzelijst(ELEMENTEN.map(([k, l]) => [k, `${l} – ${ORGANEN[k]}`]), i.element, "Geen element");
+  el.onchange = async () => { i.element = el.value; await bewaarMeta(i); tekenLijst(); };
+  const so = keuzelijst(SOORTEN, i.soort, "Geen soort");
+  so.onchange = async () => { i.soort = so.value; await bewaarMeta(i); tekenLijst(); };
+
+  const rij = document.createElement("div"); rij.className = "rij"; rij.append(el, so);
+
+  const wis = document.createElement("button");
+  wis.className = "wis"; wis.textContent = "Verwijderen";
+  wis.onclick = async () => {
+    if (!confirm(`"${i.naam}" uit de app verwijderen?`)) return;
+    await tx(["meta","bestand"], "readwrite", t => { t.objectStore("meta").delete(i.id); t.objectStore("bestand").delete(i.id); });
+    items = items.filter(x => x.id !== i.id);
+    tekenLijst();
+  };
+
+  d.append(naam, rij, wis);
+  return d;
+}
+
+async function toonRuimte(){
+  const s = document.getElementById("ruimte");
+  if (!s || !navigator.storage?.estimate) return;
+  const e = await navigator.storage.estimate();
+  const mb = x => Math.round(x / 1048576).toLocaleString("nl-BE");
+  s.textContent = `${items.length} bestanden · ${mb(e.usage)} MB gebruikt`;
+}
+
+/* ---------- importeren ---------- */
+function raad(bestandsnaam){
+  const n = bestandsnaam.toLowerCase();
+  const n2 = n.replace(/[_-]+/g, " ");
+  const el = ["tantien", ...Object.keys(HERKEN).filter(k => k !== "tantien")].map(k => [k]).find(([k]) => HERKEN[k].some(w => n2.includes(w)));
+  let soort = "";
+  if (n.includes("geluid") || n.includes("klank")) soort = "geluid";
+  else if (n.includes("basis")) soort = "basis";
+  else if (n.includes("integr")) soort = "integreren";
+  else if (n.includes("verster")) soort = "versterken";
+  const naam = bestandsnaam.replace(/\.[^.]+$/, "").replace(/_+/g, " ").trim();
+  return {element: el ? el[0] : "", soort, naam};
+}
+
+document.getElementById("bestanden").onchange = async e => {
+  const files = [...e.target.files];
+  e.target.value = "";
+  if (!files.length) return;
+  let nieuw = 0, overgeslagen = 0;
+  try {
+    for (let k = 0; k < files.length; k++) {
+      const f = files[k];
+      if (items.some(i => i.bestand === f.name && i.grootte === f.size)) { overgeslagen++; continue; }
+      meld(`Opslaan ${k + 1} van ${files.length}: ${f.name}`, true);
+      const id = (crypto.randomUUID ? crypto.randomUUID() : Date.now() + "-" + Math.random());
+      const m = {id, ...raad(f.name), type: f.type, bestand: f.name, grootte: f.size};
+      await tx(["meta","bestand"], "readwrite", t => { t.objectStore("meta").put(m); t.objectStore("bestand").put(f, id); });
+      items.push(m); nieuw++;
+    }
+    if (navigator.storage?.persist) navigator.storage.persist();
+    meld(`${nieuw} toegevoegd` + (overgeslagen ? `, ${overgeslagen} stond(en) er al in` : "") + ". Controleer element en soort.");
+    bewerken = true;
+    document.getElementById("bewerkKnop").classList.add("aan");
+    document.getElementById("bewerkKnop").textContent = "Klaar";
+  } catch(err) {
+    meld("Opslaan mislukt: " + (err?.message || err) + ". Mogelijk is je gsm vol.");
+  }
+  tekenLijst();
+};
+
+/* ---------- afspelen ---------- */
+const speler = document.getElementById("speler");
+const video = document.getElementById("video");
+let huidigeUrl = null;
+
+let rij = [], pos = 0;
+
+async function speel(lijst, start){
+  rij = lijst; pos = start;
+  speler.classList.add("open");
+  history.pushState({speler:true}, "");
+  await laad();
+}
+async function laad(){
+  const i = rij[pos];
+  const blob = await haalBestand(i.id);
+  if (!blob) { meld("Bestand niet gevonden."); return; }
+  if (huidigeUrl) URL.revokeObjectURL(huidigeUrl);
+  huidigeUrl = URL.createObjectURL(blob);
+  video.src = huidigeUrl;
+  const isAudio = (blob.type || i.type || "").startsWith("audio") || /\.(mp3|m4a|wav|ogg|aac|opus)$/i.test(i.bestand || "");
+  speler.classList.toggle("audio", isAudio);
+  speler.style.setProperty("--kleur", i.element ? `var(--${i.element})` : "var(--geen)");
+  document.getElementById("audioNaam").textContent = i.naam;
+  const meer = rij.length > 1;
+  document.getElementById("spelerTitel").textContent = (meer ? `${pos + 1}/${rij.length} · ` : "") + i.naam;
+  document.getElementById("vorige").style.display = meer ? "" : "none";
+  document.getElementById("volgende").style.display = meer ? "" : "none";
+  document.getElementById("vorige").disabled = pos === 0;
+  document.getElementById("volgende").disabled = pos === rij.length - 1;
+  video.play().catch(() => {});
+}
+video.addEventListener("ended", () => { if (pos < rij.length - 1) { pos++; laad(); } });
+document.getElementById("vorige").onclick = () => { if (pos > 0) { pos--; laad(); } };
+document.getElementById("volgende").onclick = () => { if (pos < rij.length - 1) { pos++; laad(); } };
+function sluitSpeler(){
+  video.pause();
+  video.removeAttribute("src"); video.load();
+  if (huidigeUrl) { URL.revokeObjectURL(huidigeUrl); huidigeUrl = null; }
+  speler.classList.remove("open");
+}
+document.getElementById("sluit").onclick = () => history.back();
+window.addEventListener("popstate", () => { if (speler.classList.contains("open")) sluitSpeler(); });
+
+/* ---------- tabbladen ---------- */
+let tab = "oef";
+try { if (localStorage.getItem("chikungTab") === "info") tab = "info"; } catch(e){}
+function toonTab(t){
+  tab = t;
+  try { localStorage.setItem("chikungTab", t); } catch(e){}
+  document.getElementById("tabOef").hidden = t !== "oef";
+  document.getElementById("tabInfo").hidden = t !== "info";
+  document.getElementById("tabKnopOef").classList.toggle("aan", t === "oef");
+  document.getElementById("tabKnopInfo").classList.toggle("aan", t === "info");
+}
+document.getElementById("tabKnopOef").onclick = () => toonTab("oef");
+document.getElementById("tabKnopInfo").onclick = () => toonTab("info");
+
+/* ---------- info (pdf's) ---------- */
+let infoItems = [];
+const alleInfo = () => new Promise((ok, fout) => {
+  const r = db.transaction("info").objectStore("info").getAll();
+  r.onsuccess = () => ok(r.result); r.onerror = () => fout(r.error);
+});
+
+function tekenInfo(){
+  const lijst = document.getElementById("infoLijst");
+  lijst.innerHTML = "";
+  const knop = tekst => {
+    const b = document.createElement("button");
+    b.className = "groot"; b.textContent = tekst;
+    b.onclick = () => document.getElementById("pdfBestanden").click();
+    return b;
+  };
+  if (!infoItems.length) {
+    const d = document.createElement("div");
+    d.className = "leeg";
+    d.innerHTML = "Nog geen cursussen of uitleg.<br>Voeg PDF's toe; ze openen daarna ook offline.<br><br>";
+    d.appendChild(knop("+ PDF's toevoegen"));
+    lijst.appendChild(d);
+    return;
+  }
+  if (bewerken) {
+    const balk = document.createElement("div"); balk.className = "balk";
+    balk.appendChild(knop("+ PDF's toevoegen"));
+    lijst.appendChild(balk);
+  }
+  infoItems.sort((a, b) => a.naam.localeCompare(b.naam, "nl", {numeric:true})).forEach(i => {
+    if (bewerken) {
+      const d = document.createElement("div"); d.className = "bewerk";
+      d.style.setProperty("--kleur", "var(--accent)");
+      const naam = document.createElement("input"); naam.value = i.naam;
+      naam.onchange = async () => { i.naam = naam.value.trim() || i.naam; await tx("info", "readwrite", t => t.objectStore("info").put(i)); };
+      const wis = document.createElement("button"); wis.className = "wis"; wis.textContent = "Verwijderen";
+      wis.onclick = async () => {
+        if (!confirm(`"${i.naam}" uit de app verwijderen?`)) return;
+        await tx(["info","bestand"], "readwrite", t => { t.objectStore("info").delete(i.id); t.objectStore("bestand").delete(i.id); });
+        infoItems = infoItems.filter(x => x.id !== i.id); tekenInfo();
+      };
+      d.append(naam, wis); lijst.appendChild(d);
+    } else {
+      const b = document.createElement("button"); b.className = "kaart pdf";
+      b.textContent = i.naam;
+      const s = document.createElement("span"); s.className = "meta";
+      s.textContent = "PDF" + (i.paginas ? ` · ${i.paginas} blz.` : "");
+      b.appendChild(s);
+      b.onclick = () => openPdf(i);
+      lijst.appendChild(b);
+    }
+  });
+}
+
+document.getElementById("pdfBestanden").onchange = async e => {
+  const files = [...e.target.files]; e.target.value = "";
+  if (!files.length) return;
+  let nieuw = 0, overgeslagen = 0;
+  try {
+    for (let k = 0; k < files.length; k++) {
+      const f = files[k];
+      if (infoItems.some(i => i.bestand === f.name && i.grootte === f.size)) { overgeslagen++; continue; }
+      meld(`Opslaan ${k + 1} van ${files.length}: ${f.name}`, true);
+      const id = (crypto.randomUUID ? crypto.randomUUID() : Date.now() + "-" + Math.random());
+      const m = {id, naam: f.name.replace(/\.pdf$/i, "").replace(/_+/g, " ").trim(), bestand: f.name, grootte: f.size};
+      await tx(["info","bestand"], "readwrite", t => { t.objectStore("info").put(m); t.objectStore("bestand").put(f, id); });
+      infoItems.push(m); nieuw++;
+    }
+    if (navigator.storage?.persist) navigator.storage.persist();
+    meld(`${nieuw} toegevoegd` + (overgeslagen ? `, ${overgeslagen} stond(en) er al in` : "") + ".");
+  } catch(err) {
+    meld("Opslaan mislukt: " + (err?.message || err) + ". Mogelijk is je gsm vol.");
+  }
+  tekenInfo();
+};
+
+/* pdf-lezer (pdf.js, lokaal meegeleverd → werkt offline) */
+const lezer = document.getElementById("lezer");
+const paginasDiv = document.getElementById("paginas");
+let pdfDoc = null, zoom = 1, waarnemer = null, pdfjsLib = null;
+
+async function openPdf(i){
+  const blob = await haalBestand(i.id);
+  if (!blob) { meld("Bestand niet gevonden."); return; }
+  document.getElementById("lezerTitel").textContent = i.naam;
+  lezer.classList.add("open");
+  history.pushState({lezer:true}, "");
+  paginasDiv.innerHTML = '<div class="leeg" style="color:#ddd">Laden…</div>';
+  try {
+    if (!pdfjsLib) {
+      pdfjsLib = await import("./pdf.min.mjs");
+      pdfjsLib.GlobalWorkerOptions.workerSrc = "./pdf.worker.min.mjs";
+    }
+    pdfDoc = await pdfjsLib.getDocument({data: await blob.arrayBuffer()}).promise;
+    if (i.paginas !== pdfDoc.numPages) { i.paginas = pdfDoc.numPages; tx("info", "readwrite", t => t.objectStore("info").put(i)); }
+    zoom = 1;
+    await bouwPaginas();
+  } catch(err) {
+    paginasDiv.innerHTML = '<div class="leeg" style="color:#ddd">Deze PDF kan niet geopend worden.</div>';
+  }
+}
+
+async function bouwPaginas(){
+  if (waarnemer) waarnemer.disconnect();
+  paginasDiv.innerHTML = "";
+  const eerste = await pdfDoc.getPage(1);
+  const vp1 = eerste.getViewport({scale: 1});
+  const breedte = Math.round((paginasDiv.clientWidth - 16) * zoom);
+  const doc = pdfDoc;
+  waarnemer = new IntersectionObserver(ingangen => {
+    ingangen.forEach(ing => {
+      if (!ing.isIntersecting || ing.target.dataset.klaar) return;
+      ing.target.dataset.klaar = "1";
+      renderPagina(doc, +ing.target.dataset.nr, ing.target, breedte);
+    });
+  }, {root: paginasDiv, rootMargin: "1200px 0px"});
+  for (let n = 1; n <= pdfDoc.numPages; n++) {
+    const d = document.createElement("div");
+    d.className = "pagina"; d.dataset.nr = n;
+    d.style.width = breedte + "px";
+    d.style.height = Math.round(breedte * vp1.height / vp1.width) + "px";
+    paginasDiv.appendChild(d);
+    waarnemer.observe(d);
+  }
+}
+
+async function renderPagina(doc, nr, houder, breedte){
+  if (doc !== pdfDoc) return;
+  const pagina = await doc.getPage(nr);
+  const vp0 = pagina.getViewport({scale: 1});
+  const schaal = breedte / vp0.width;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+  const vp = pagina.getViewport({scale: schaal * dpr});
+  const c = document.createElement("canvas");
+  c.width = Math.floor(vp.width); c.height = Math.floor(vp.height);
+  houder.style.height = Math.round(vp0.height * schaal) + "px";
+  houder.appendChild(c);
+  await pagina.render({canvasContext: c.getContext("2d"), viewport: vp}).promise;
+}
+
+function zetZoom(nieuw){
+  const verhouding = paginasDiv.scrollTop / Math.max(1, paginasDiv.scrollHeight);
+  zoom = Math.min(3, Math.max(1, nieuw));
+  bouwPaginas().then(() => { paginasDiv.scrollTop = verhouding * paginasDiv.scrollHeight; });
+}
+document.getElementById("groter").onclick = () => pdfDoc && zetZoom(zoom + 0.5);
+document.getElementById("kleiner").onclick = () => pdfDoc && zetZoom(zoom - 0.5);
+
+function sluitLezer(){
+  lezer.classList.remove("open");
+  if (waarnemer) waarnemer.disconnect();
+  paginasDiv.innerHTML = "";
+  if (pdfDoc) { pdfDoc.destroy(); pdfDoc = null; }
+}
+document.getElementById("lezerSluit").onclick = () => history.back();
+window.addEventListener("popstate", () => { if (lezer.classList.contains("open")) sluitLezer(); });
+
+/* ---------- bewerken ---------- */
+document.getElementById("bewerkKnop").onclick = function(){
+  bewerken = !bewerken;
+  this.classList.toggle("aan", bewerken);
+  this.textContent = bewerken ? "Klaar" : "Bewerken";
+  tekenLijst(); tekenInfo();
+};
+
+/* ---------- start ---------- */
+(async () => {
+  db = await openDb();
+  items = await alleMeta();
+  infoItems = await alleInfo();
+  toonTab(tab);
+  tekenChips();
+  tekenLijst();
+  tekenInfo();
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+})();
+</script>
+</body>
+</html>
